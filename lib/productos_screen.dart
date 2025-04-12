@@ -24,31 +24,35 @@ class ProductosScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF1A1A2E), // Fondo oscuro mágico
       appBar: AppBar(
         centerTitle: true,
-        elevation: 2,
-        backgroundColor: Colors.white,
+        backgroundColor: const Color(0xFF0F3460),
+        elevation: 6,
         title: Text(
-          'Productos',
-          style: GoogleFonts.poppins(
+          'Tienda Mística',
+          style: GoogleFonts.medievalSharp(
             textStyle: const TextStyle(
-              fontSize: 24,
+              fontSize: 26,
               fontWeight: FontWeight.bold,
-              color: Colors.black87,
+              color: Colors.amberAccent,
+              shadows: [
+                Shadow(color: Colors.black, blurRadius: 4, offset: Offset(1, 1)),
+              ],
             ),
           ),
         ),
-        iconTheme: const IconThemeData(color: Colors.black87),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: FutureBuilder<List<Producto>>(
         future: _getProductos(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator(color: Colors.amberAccent));
           }
 
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No hay productos disponibles.'));
+            return const Center(child: Text('No hay productos mágicos disponibles.', style: TextStyle(color: Colors.white70)));
           }
 
           final productos = snapshot.data!;
@@ -72,100 +76,111 @@ class ProductosScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final producto = productos[index];
 
-                      return Card(
-                        elevation: 3,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                      return Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFF16213E), Color(0xFF0F3460)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.6),
+                              blurRadius: 8,
+                              offset: const Offset(2, 4),
+                            ),
+                          ],
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: Column(
-                            children: [
-                              Expanded(
-                                flex: 6,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.network(
-                                    producto.image,
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (_, __, ___) =>
-                                        const Icon(Icons.broken_image, size: 60),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  flex: 6,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: Image.network(
+                                      producto.image,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (_, __, ___) =>
+                                          const Icon(Icons.broken_image, size: 60, color: Colors.white),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(height: 6),
-                              Expanded(
-                                flex: 4,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      producto.name,
-                                      style: GoogleFonts.poppins(
-                                        textStyle: const TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 14,
+                                const SizedBox(height: 6),
+                                Expanded(
+                                  flex: 4,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        producto.name,
+                                        style: GoogleFonts.medievalSharp(
+                                          textStyle: const TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.amberAccent,
+                                          ),
                                         ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(height: 2),
-                                    Text(
-                                      'S/ ${producto.price.toStringAsFixed(2)}',
-                                      style: GoogleFonts.poppins(
-                                        textStyle: const TextStyle(
-                                          color: Colors.green,
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        'S/ ${producto.price.toStringAsFixed(2)}',
+                                        style: const TextStyle(
+                                          color: Colors.lightGreenAccent,
                                           fontWeight: FontWeight.bold,
+                                          fontSize: 13,
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(height: 2),
-                                    Text(
-                                      'Stock: ${producto.stock}',
-                                      style: GoogleFonts.poppins(
-                                        textStyle: const TextStyle(
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        'Stock: ${producto.stock}',
+                                        style: const TextStyle(
                                           fontSize: 11,
-                                          color: Colors.grey,
+                                          color: Colors.white70,
                                         ),
                                       ),
-                                    ),
-                                    const Spacer(),
-                                    Center(
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => ProductoDetalleScreen(producto: producto),
+                                      const Spacer(),
+                                      Center(
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => ProductoDetalleScreen(producto: producto),
+                                              ),
+                                            );
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: const Color(0xFF533483),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(10),
                                             ),
-                                          );
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.blue,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(8),
+                                            shadowColor: Colors.amberAccent,
                                           ),
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 8, horizontal: 16),
-                                        ),
-                                        child: Text(
-                                          'Ver Más',
-                                          style: GoogleFonts.poppins(
-                                            textStyle: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
+                                          child: Text(
+                                            'Ver Más',
+                                            style: GoogleFonts.poppins(
+                                              textStyle: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       );

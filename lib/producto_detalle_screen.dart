@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'producto.dart';
 
 class ProductoDetalleScreen extends StatelessWidget {
@@ -11,50 +12,123 @@ class ProductoDetalleScreen extends StatelessWidget {
     final isLargeScreen = MediaQuery.of(context).size.width > 600;
 
     return Scaffold(
-      appBar: AppBar(title: Text(producto.name)),
+      backgroundColor: const Color(0xFF1A1A2E), // Fondo oscuro
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF0F3460),
+        elevation: 4,
+        title: Text(
+          producto.name,
+          style: GoogleFonts.medievalSharp(
+            textStyle: const TextStyle(
+              fontSize: 22,
+              color: Colors.amberAccent,
+              shadows: [
+                Shadow(color: Colors.black, blurRadius: 4, offset: Offset(1, 1)),
+              ],
+            ),
+          ),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             Center(
               child: Container(
-                width: isLargeScreen ? 250 : 180, // Ajuste en tamaño de contenedor
-                height: isLargeScreen ? 250 : 180, // Ajuste en tamaño de contenedor
+                width: isLargeScreen ? 280 : 200,
+                height: isLargeScreen ? 280 : 200,
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.withOpacity(0.5), width: 2),
-                  borderRadius: BorderRadius.circular(10),
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF533483), Color(0xFF0F3460)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.amberAccent.withOpacity(0.4),
+                      blurRadius: 12,
+                      spreadRadius: 2,
+                      offset: const Offset(4, 4),
+                    )
+                  ],
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(16),
                   child: Image.network(
                     producto.image,
-                    fit: BoxFit.cover, // Ajuste de la imagen
-                    errorBuilder: (_, __, ___) => const Icon(Icons.broken_image, size: 100),
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => const Icon(Icons.broken_image, size: 100, color: Colors.white),
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 20),
-            _buildDetails(),
+            const SizedBox(height: 30),
+            _buildDetails(context),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildDetails() {
+  Widget _buildDetails(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(producto.name, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-        const SizedBox(height: 8),
-        Text('Categoría: ${producto.category}', style: const TextStyle(fontSize: 16)),
-        const SizedBox(height: 10),
-        Text(producto.description, style: const TextStyle(fontSize: 16), textAlign: TextAlign.justify),
+        Text(
+          producto.name,
+          style: GoogleFonts.medievalSharp(
+            textStyle: const TextStyle(
+              fontSize: 26,
+              fontWeight: FontWeight.bold,
+              color: Colors.amberAccent,
+            ),
+          ),
+        ),
+        const SizedBox(height: 12),
+        Text(
+          'Categoría: ${producto.category}',
+          style: GoogleFonts.poppins(
+            textStyle: const TextStyle(fontSize: 16, color: Colors.white70),
+          ),
+        ),
+        const SizedBox(height: 14),
+        Text(
+          producto.description,
+          style: GoogleFonts.poppins(
+            textStyle: const TextStyle(fontSize: 16, color: Colors.white),
+          ),
+          textAlign: TextAlign.justify,
+        ),
         const SizedBox(height: 20),
-        Text('Precio: S/ ${producto.price.toStringAsFixed(2)}',
-            style: const TextStyle(fontSize: 18, color: Colors.green)),
-        Text('Stock: ${producto.stock}', style: const TextStyle(fontSize: 16)),
+        Divider(color: Colors.white30, thickness: 1),
+        const SizedBox(height: 10),
+        Row(
+          children: [
+            const Icon(Icons.price_check, color: Colors.greenAccent),
+            const SizedBox(width: 8),
+            Text(
+              'Precio: S/ ${producto.price.toStringAsFixed(2)}',
+              style: GoogleFonts.poppins(
+                textStyle: const TextStyle(fontSize: 18, color: Colors.greenAccent, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        Row(
+          children: [
+            const Icon(Icons.inventory, color: Colors.lightBlueAccent),
+            const SizedBox(width: 8),
+            Text(
+              'Stock: ${producto.stock}',
+              style: GoogleFonts.poppins(
+                textStyle: const TextStyle(fontSize: 16, color: Colors.white70),
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }
