@@ -192,6 +192,14 @@ class ProductosScreen extends StatelessWidget {
           );
         },
       ),
+      floatingActionButton: FloatingActionButton(
+  backgroundColor: const Color(0xFF9D4EDD),
+  onPressed: () {
+    Navigator.pushNamed(context, '/agregarProducto'); // Asegúrate de tener esta ruta en tu MaterialApp
+  },
+  child: const Icon(Icons.add, color: Colors.white),
+),
+
     );
   }
 }

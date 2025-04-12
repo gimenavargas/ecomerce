@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'productos_screen.dart';
+import 'agregar_producto_screen.dart'; // importa la pantalla
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,9 +26,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Market',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: const ProductosScreen(),
+      debugShowCheckedModeBanner: false,
+      title: 'Tienda Mística',
+      theme: ThemeData.dark(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const ProductosScreen(),
+        '/agregarProducto': (context) => const AgregarProductoScreen(),
+      },
     );
   }
 }
