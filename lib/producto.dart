@@ -2,27 +2,27 @@ class Producto {
   final String name;
   final String category;
   final String description;
-  final int id;
   final double price;
   final int stock;
+  final String image;
 
   Producto({
     required this.name,
     required this.category,
     required this.description,
-    required this.id,
     required this.price,
     required this.stock,
+    required this.image,
   });
 
-  factory Producto.fromMap(Map<String, dynamic> data) {
+  factory Producto.fromMap(Map<String, dynamic> map) {
     return Producto(
-      name: data['name'] ?? '',
-      category: data['category'] ?? '',
-      description: data['description'] ?? '',
-      id: data['id'] ?? 0,
-      price: (data['price'] ?? 0).toDouble(),
-      stock: data['stock'] ?? 0,
+      name: map['name'] ?? '',
+      category: map['category'] ?? '',
+      description: map['description'] ?? '',
+      price: (map['price'] ?? 0).toDouble(),
+      stock: map['stock'] ?? 0,
+      image: map['image'] ?? '',
     );
   }
 }
