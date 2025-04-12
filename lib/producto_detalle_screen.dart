@@ -31,42 +31,60 @@ class ProductoDetalleScreen extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Center(
-              child: Container(
-                width: isLargeScreen ? 280 : 200,
-                height: isLargeScreen ? 280 : 200,
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF533483), Color(0xFF0F3460)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.amberAccent.withOpacity(0.4),
-                      blurRadius: 12,
-                      spreadRadius: 2,
-                      offset: const Offset(4, 4),
-                    )
-                  ],
+        padding: const EdgeInsets.all(16),
+        child: Center(
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 500),
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: const Color(0xFF0F3460).withOpacity(0.5),
+              borderRadius: BorderRadius.circular(24),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.amberAccent.withOpacity(0.2),
+                  blurRadius: 20,
+                  spreadRadius: 4,
+                  offset: const Offset(0, 8),
                 ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Image.network(
-                    producto.image,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => const Icon(Icons.broken_image, size: 100, color: Colors.white),
-                  ),
-                ),
-              ),
+              ],
+              border: Border.all(color: Colors.amberAccent.withOpacity(0.3)),
             ),
-            const SizedBox(height: 30),
-            _buildDetails(context),
-          ],
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: isLargeScreen ? 280 : 200,
+                  height: isLargeScreen ? 280 : 200,
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF533483), Color(0xFF0F3460)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.amberAccent.withOpacity(0.4),
+                        blurRadius: 12,
+                        spreadRadius: 2,
+                        offset: const Offset(4, 4),
+                      )
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.network(
+                      producto.image,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => const Icon(Icons.broken_image, size: 100, color: Colors.white),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 30),
+                _buildDetails(context),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -74,7 +92,7 @@ class ProductoDetalleScreen extends StatelessWidget {
 
   Widget _buildDetails(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
           producto.name,
@@ -105,11 +123,12 @@ class ProductoDetalleScreen extends StatelessWidget {
         Divider(color: Colors.white30, thickness: 1),
         const SizedBox(height: 10),
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(Icons.price_check, color: Colors.greenAccent),
             const SizedBox(width: 8),
             Text(
-              'Precio: S/ ${producto.price.toStringAsFixed(2)}',
+              'S/ ${producto.price.toStringAsFixed(2)}',
               style: GoogleFonts.poppins(
                 textStyle: const TextStyle(fontSize: 18, color: Colors.greenAccent, fontWeight: FontWeight.bold),
               ),
@@ -118,6 +137,7 @@ class ProductoDetalleScreen extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(Icons.inventory, color: Colors.lightBlueAccent),
             const SizedBox(width: 8),

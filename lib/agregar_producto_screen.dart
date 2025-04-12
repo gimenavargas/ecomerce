@@ -29,12 +29,38 @@ class _AgregarProductoScreenState extends State<AgregarProductoScreen> {
         'image': _imagenController.text,
       });
 
-      Navigator.pop(context);
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: const [
+                Icon(Icons.check_circle, color: Colors.greenAccent),
+                SizedBox(width: 12),
+                Expanded(child: Text('Producto guardado con éxito 🎉')),
+              ],
+            ),
+            backgroundColor: const Color(0xFF0F3460),
+            behavior: SnackBarBehavior.floating,
+            duration: const Duration(seconds: 3),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            margin: const EdgeInsets.all(16),
+          ),
+        );
+      }
+
+      await Future.delayed(const Duration(milliseconds: 300));
+      if (context.mounted) {
+        Navigator.pop(context);
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final isLargeScreen = MediaQuery.of(context).size.width > 600;
+
     return Scaffold(
       backgroundColor: const Color(0xFF1A1A2E),
       appBar: AppBar(
@@ -47,32 +73,50 @@ class _AgregarProductoScreenState extends State<AgregarProductoScreen> {
         backgroundColor: const Color(0xFF0F3460),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              _buildTextField('Nombre del producto', _nombreController),
-              _buildTextField('Precio', _precioController, tipo: TextInputType.number),
-              _buildTextField('Stock', _stockController, tipo: TextInputType.number),
-              _buildTextField('Categoría', _categoriaController),
-              _buildTextField('Descripción', _descripcionController, maxLines: 3),
-              _buildTextField('URL de la imagen', _imagenController),
-              const SizedBox(height: 20),
-              ElevatedButton.icon(
-                onPressed: _guardarProducto,
-                icon: const Icon(Icons.save),
-                label: const Text('Guardar'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF9D4EDD),
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  textStyle: GoogleFonts.poppins(
-                    textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      body: Center(
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 500),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: const Color(0xFF0F3460).withOpacity(0.7),
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.amberAccent.withOpacity(0.2),
+                blurRadius: 12,
+                spreadRadius: 4,
+              )
+            ],
+          ),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                _buildTextField('Nombre del producto', _nombreController),
+                _buildTextField('Precio', _precioController, tipo: TextInputType.number),
+                _buildTextField('Stock', _stockController, tipo: TextInputType.number),
+                _buildTextField('Categoría', _categoriaController),
+                _buildTextField('Descripción', _descripcionController, maxLines: 3),
+                _buildTextField('URL de la imagen', _imagenController),
+                const SizedBox(height: 20),
+                ElevatedButton.icon(
+                  onPressed: _guardarProducto,
+                  icon: const Icon(Icons.save),
+                  label: const Text('Guardar Producto'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF9D4EDD),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    textStyle: GoogleFonts.poppins(
+                      textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -92,7 +136,7 @@ class _AgregarProductoScreenState extends State<AgregarProductoScreen> {
           labelText: label,
           labelStyle: const TextStyle(color: Colors.amberAccent),
           filled: true,
-          fillColor: const Color(0xFF0F3460),
+          fillColor: const Color(0xFF16213E),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         ),
         validator: (value) {
