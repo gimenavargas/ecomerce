@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:market/auth/authentication_screen.dart';
 import 'package:market/auth/login_screen.dart';
-import 'package:market/auth/inicio_screen.dart';
-import 'package:market/auth/register_screen.dart'; // Asegúrate de tener esta pantalla
+import 'package:market/auth/register_screen.dart';
 import 'package:market/home_screen.dart';
 import 'package:market/productos_screen.dart';
 import 'package:market/agregar_producto_screen.dart';
 import 'package:market/carrito_screen.dart';
 import 'package:market/carrito_provider.dart';
+import 'package:market/inicio_screen.dart'; // <- Asegúrate de tener este archivo creado
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Inicializa Firebase
   await Firebase.initializeApp(
     options: const FirebaseOptions(
       apiKey: "AIzaSyD4bHZF3MpWngoWgRjEbcK-dRtnHJ65wpc",
@@ -28,7 +30,7 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => CarritoProvider()), // Proveedor para el carrito de compras
+        ChangeNotifierProvider(create: (_) => CarritoProvider()),
       ],
       child: const MyApp(),
     ),
@@ -43,16 +45,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Tienda Mística',
-      theme: ThemeData.dark(),
-      initialRoute: '/', // Cambiamos la ruta inicial
+      theme: ThemeData.dark(), // Puedes personalizar este tema luego
+      initialRoute: '/',
       routes: {
-        '/': (context) => const ProductosScreen(), // Pantalla de inicio con botones
+        '/': (context) => AuthenticationScreen(),
         '/login': (context) => LoginScreen(),
         '/register': (context) => RegisterScreen(),
-        '/home': (context) => const HomeScreen(),
+        '/home': (context) => HomeScreen(), // Puedes cambiar esto a ProductosScreen si prefieres
         '/productos': (context) => const ProductosScreen(),
         '/agregarProducto': (context) => const AgregarProductoScreen(),
         '/carrito': (context) => const CarritoScreen(),
+        '/inicio': (context) => InicioScreen(), // Asegúrate que esté bien importado
       },
     );
   }

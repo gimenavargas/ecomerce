@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'listar_productos_screen.dart';  // Importa la pantalla para listar productos
 
 class AgregarProductoScreen extends StatefulWidget {
   const AgregarProductoScreen({super.key});
@@ -104,6 +105,27 @@ class _AgregarProductoScreenState extends State<AgregarProductoScreen> {
                   onPressed: _guardarProducto,
                   icon: const Icon(Icons.save),
                   label: const Text('Guardar Producto'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF9D4EDD),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    textStyle: GoogleFonts.poppins(
+                      textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ListarProductosScreen()),
+                    );
+                  },
+                  icon: const Icon(Icons.list),
+                  label: const Text('Ver Productos'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF9D4EDD),
                     padding: const EdgeInsets.symmetric(vertical: 14),

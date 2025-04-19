@@ -5,6 +5,7 @@ class Producto {
   final double price;
   final int stock;
   final String image;
+  int cantidad;
 
   Producto({
     required this.name,
@@ -13,7 +14,10 @@ class Producto {
     required this.price,
     required this.stock,
     required this.image,
+    this.cantidad = 1,
   });
+
+  
 
   factory Producto.fromMap(Map<String, dynamic> map) {
     return Producto(
