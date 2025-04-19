@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
+
 import 'productos_screen.dart';
-import 'agregar_producto_screen.dart'; // importa la pantalla
+import 'agregar_producto_screen.dart';
+import 'carrito_screen.dart'; // Asegúrate de tener esta pantalla
+import 'carrito_provider.dart'; // Asegúrate de tener este provider
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +21,14 @@ void main() async {
     ),
   );
 
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => CarritoProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -33,6 +44,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const ProductosScreen(),
         '/agregarProducto': (context) => const AgregarProductoScreen(),
+        '/carrito': (context) => const CarritoScreen(),
       },
     );
   }

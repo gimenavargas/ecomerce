@@ -3,6 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'producto.dart';
 import 'producto_detalle_screen.dart';
+import 'package:provider/provider.dart';
+import 'carrito_provider.dart';
+import 'carrito_screen.dart'; // <-- Asegúrate de tener esta pantalla
 
 class ProductosScreen extends StatelessWidget {
   const ProductosScreen({super.key});
@@ -24,7 +27,7 @@ class ProductosScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A1A2E), // Fondo oscuro mágico
+      backgroundColor: const Color(0xFF1A1A2E),
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: const Color(0xFF0F3460),
@@ -43,6 +46,18 @@ class ProductosScreen extends StatelessWidget {
           ),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.shopping_cart),
+            tooltip: 'Ver carrito',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CarritoScreen()),
+              );
+            },
+          ),
+        ],
       ),
       body: FutureBuilder<List<Producto>>(
         future: _getProductos(),
@@ -147,34 +162,56 @@ class ProductosScreen extends StatelessWidget {
                                         ),
                                       ),
                                       const Spacer(),
-                                      Center(
-                                        child: ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) => ProductoDetalleScreen(producto: producto),
+                                      Column(
+                                        children: [
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => ProductoDetalleScreen(producto: producto),
+                                                ),
+                                              );
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: const Color(0xFF533483),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(10),
                                               ),
-                                            );
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: const Color(0xFF533483),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(10),
+                                              shadowColor: Colors.amberAccent,
                                             ),
-                                            shadowColor: Colors.amberAccent,
-                                          ),
-                                          child: Text(
-                                            'Ver Más',
-                                            style: GoogleFonts.poppins(
-                                              textStyle: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
+                                            child: Text(
+                                              'Ver Más',
+                                              style: GoogleFonts.poppins(
+                                                textStyle: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
+                                          const SizedBox(height: 6),
+                                          ElevatedButton.icon(
+                                            onPressed: () {
+                                              Provider.of<CarritoProvider>(context, listen: false).agregarProducto(producto);
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(
+                                                  content: Text('${producto.name} agregado al carrito'),
+                                                  backgroundColor: Colors.green,
+                                                ),
+                                              );
+                                            },
+                                            icon: const Icon(Icons.shopping_cart, size: 16),
+                                            label: const Text('Agregar al carrito'),
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: const Color(0xFF1E5128),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(10),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
@@ -193,13 +230,12 @@ class ProductosScreen extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-  backgroundColor: const Color(0xFF9D4EDD),
-  onPressed: () {
-    Navigator.pushNamed(context, '/agregarProducto'); // Asegúrate de tener esta ruta en tu MaterialApp
-  },
-  child: const Icon(Icons.add, color: Colors.white),
-),
-
+        backgroundColor: const Color(0xFF9D4EDD),
+        onPressed: () {
+          Navigator.pushNamed(context, '/agregarProducto');
+        },
+        child: const Icon(Icons.add, color: Colors.white),
+      ),
     );
   }
 }
