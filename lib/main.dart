@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-
-import 'productos_screen.dart';
-import 'agregar_producto_screen.dart';
-import 'carrito_screen.dart'; // Asegúrate de tener esta pantalla
-import 'carrito_provider.dart'; // Asegúrate de tener este provider
+import 'package:market/auth/login_screen.dart';
+import 'package:market/auth/inicio_screen.dart';
+import 'package:market/auth/register_screen.dart'; // Asegúrate de tener esta pantalla
+import 'package:market/home_screen.dart';
+import 'package:market/productos_screen.dart';
+import 'package:market/agregar_producto_screen.dart';
+import 'package:market/carrito_screen.dart';
+import 'package:market/carrito_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Inicializa Firebase
   await Firebase.initializeApp(
     options: const FirebaseOptions(
       apiKey: "AIzaSyD4bHZF3MpWngoWgRjEbcK-dRtnHJ65wpc",
@@ -24,7 +28,7 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => CarritoProvider()),
+        ChangeNotifierProvider(create: (_) => CarritoProvider()), // Proveedor para el carrito de compras
       ],
       child: const MyApp(),
     ),
@@ -40,9 +44,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Tienda Mística',
       theme: ThemeData.dark(),
-      initialRoute: '/',
+      initialRoute: '/', // Cambiamos la ruta inicial
       routes: {
-        '/': (context) => const ProductosScreen(),
+        '/': (context) => const ProductosScreen(), // Pantalla de inicio con botones
+        '/login': (context) => LoginScreen(),
+        '/register': (context) => RegisterScreen(),
+        '/home': (context) => const HomeScreen(),
+        '/productos': (context) => const ProductosScreen(),
         '/agregarProducto': (context) => const AgregarProductoScreen(),
         '/carrito': (context) => const CarritoScreen(),
       },

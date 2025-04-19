@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'carrito_provider.dart';
-import 'pdf_generator.dart';
 import 'whatsapp_sender.dart';
 
 class FormularioCompra extends StatefulWidget {
@@ -66,15 +65,7 @@ class _FormularioCompraState extends State<FormularioCompra> {
                           .toList();
 
                       // Generar PDF y enviar por WhatsApp
-                      PdfGenerator().generarBoleta(
-                        nombre: _nombre!,
-                        dni: _dni!,
-                        direccion: _direccion!,
-                        telefono: _telefono!,
-                        productos: carrito,
-                      ).then((pdfFile) {
-                        WhatsAppSender.enviarPDFporWhatsApp(pdfFile);
-                      });
+                      
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Compra realizada exitosamente')),
@@ -90,4 +81,4 @@ class _FormularioCompraState extends State<FormularioCompra> {
       ),
     );
   }
-}
+} 

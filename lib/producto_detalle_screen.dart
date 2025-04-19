@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'producto.dart';
+import 'carrito_provider.dart';
 
 class ProductoDetalleScreen extends StatelessWidget {
   final Producto producto;
@@ -12,9 +14,9 @@ class ProductoDetalleScreen extends StatelessWidget {
     final isLargeScreen = MediaQuery.of(context).size.width > 600;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF1A1A2E), // Fondo oscuro
+      backgroundColor: const Color(0xFF1A1A2E),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0F3460),
+        backgroundColor: const Color(0xFF3D2C8D),
         elevation: 4,
         title: Text(
           producto.name,
@@ -37,11 +39,11 @@ class ProductoDetalleScreen extends StatelessWidget {
             constraints: const BoxConstraints(maxWidth: 500),
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: const Color(0xFF0F3460).withOpacity(0.5),
+              color: const Color(0xFF3D2C8D).withOpacity(0.5),
               borderRadius: BorderRadius.circular(24),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.amberAccent.withOpacity(0.2),
+                  color: Colors.purpleAccent.withOpacity(0.2),
                   blurRadius: 20,
                   spreadRadius: 4,
                   offset: const Offset(0, 8),
@@ -64,7 +66,7 @@ class ProductoDetalleScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.amberAccent.withOpacity(0.4),
+                        color: Colors.purple.withOpacity(0.4),
                         blurRadius: 12,
                         spreadRadius: 2,
                         offset: const Offset(4, 4),
@@ -82,6 +84,31 @@ class ProductoDetalleScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 30),
                 _buildDetails(context),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Provider.of<CarritoProvider>(context, listen: false).agregarProducto(producto);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('${producto.name} agregado al carrito!')),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.amberAccent,
+                    foregroundColor: Colors.black,
+                    padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    shadowColor: Colors.amberAccent.withOpacity(0.5),
+                    elevation: 8,
+                  ),
+                  child: Text(
+                    'Agregar al carrito',
+                    style: GoogleFonts.poppins(
+                      textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

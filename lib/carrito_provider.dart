@@ -7,6 +7,7 @@ class CarritoProvider with ChangeNotifier {
 
   // Getter para acceder a la lista de productos en el carrito
   List<Producto> get items => _items;
+  List<Producto> get productos => _items;
 
   // Método para agregar un producto al carrito
   void agregarProducto(Producto producto) {
